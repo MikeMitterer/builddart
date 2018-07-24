@@ -1,24 +1,8 @@
-# Kotlin Template
-> https://github.com/MikeMitterer/template-kotlin
+# Example-Builder for Dart
+Mainly used with https://github.com/MikeMitterer/dart-material-design-lite-site 
+to batch-build all the samples
 
-## Usage
-Clone this template
-
-    git clone git@github.com:MikeMitterer/template-kotlin.git <new Project>
-
-Go to cloned dir
-
-    cd <new Project>
-
-Change the root-Project-Name
-Make sure the new name is lowercase and has no space in it
-
-    sed -i -e 's/kotlin-templat/<new project name>/' settings.gradle
-
-Remove your `.git` Folder
-
-    rm -rf .git
-
+This lib is used with [kscript](https://github.com/holgerbrandl/kscript)
         
 
 
