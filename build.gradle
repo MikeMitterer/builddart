@@ -19,9 +19,9 @@ version = "0.0.1"
 group = "at.mikemitterer"
 mainClassName = "at.mikemitterer.template.MainKt"
 
-sourceSets {
-    deploy
-}
+//sourceSets {
+//    deploy
+//}
 
 test {
     useJUnitPlatform()
@@ -29,12 +29,12 @@ test {
 
 dependencies {
     // Logging ---------------------------------------------------------------------------------------------------------
-    implementation group: 'org.slf4j',                  name: 'slf4j-api',          version: version_slf4j
+    implementation group: 'org.slf4j',                  name: 'slf4j-api',              version: version_slf4j
 
-    implementation group: 'org.jetbrains.kotlin',       name: 'kotlin-stdlib-jdk8', version: version_kotlin
-    //implementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect',      version: version_kotlin
+    implementation group: 'org.jetbrains.kotlin',       name: 'kotlin-stdlib-jdk8',     version: version_kotlin
 
-    //implementation group: 'org.apache.commons', name: 'commons-lang3', version: version_commonsLang3
+    implementation group: 'commons-io',                 name: 'commons-io',             version: version_commonsIO
+    implementation group: 'ch.qos.logback', 		    name: 'logback-classic', 	    version: version_logback
 
     // Test ------------------------------------------------------------------------------------------------------------
     testImplementation group: 'junit',                  name: 'junit',                      version: version_junit
@@ -89,7 +89,7 @@ task deploy(
         group: "KotlinTemplate",
         description: "Deploys this Lib",
         dependsOn: [
-                jar,
+                jar,  
                 publishToMavenLocal /*uploadArchives*/
         ]
 ) {
