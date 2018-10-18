@@ -1,20 +1,19 @@
 package at.mikemitterer.template
 
-import org.junit.Assert
-import org.junit.Test
+import io.kotlintest.shouldBe
+import io.kotlintest.specs.FunSpec
 import org.slf4j.LoggerFactory
 
 /**
  * @since 28.02.18, 09:38
  */
-class GreeterTest : Assert() {
-    private val logger = LoggerFactory.getLogger(GreeterTest::class.java)
+class GreeterTest : FunSpec( {
+    val logger = LoggerFactory.getLogger(GreeterTest::class.java)
     
-    @Test
-    fun testGreeter() {
+    test("Greeter Message should be 'Hello, Mike!'") {
         val greeter = Greeter("Mike")
 
         logger.info(greeter.message)
-        assertEquals("Hello, Mike!",greeter.message)
+        greeter.message.shouldBe("Hello, Mike!")
     }
-}
+})

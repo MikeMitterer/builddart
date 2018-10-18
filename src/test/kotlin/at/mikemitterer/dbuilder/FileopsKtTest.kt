@@ -1,25 +1,26 @@
 package at.mikemitterer.dbuilder
 
-import org.junit.Test
+import io.kotlintest.shouldBe
+import io.kotlintest.specs.AnnotationSpec
+import io.kotlintest.specs.Test
 import java.io.File
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 /**
  * @since 27.07.18, 11:53
  */
-class FileopsKtTest {
-
+@Suppress("unused")
+class FileopsKtTest: AnnotationSpec() {
     private val resourceDir = "${System.getProperty("user.dir")!!}/src/test/resources"
 
     @Test
     fun testReplaceMapContent() {
         val content = "Hallo {{name}}"
-        assertEquals("Hallo Mike", replaceVars(content,
+
+        replaceVars(content,
                 mapOf(
                         "name" to "Mike",
                         "age" to "99"
-                )))
+                )).shouldBe("Hallo Mike")
     }
 
     @Test
@@ -31,8 +32,7 @@ class FileopsKtTest {
 
         cpyFile(source,target, mapOf("name" to "Mike"))
 
-        assertTrue { target.exists() }
-        assertEquals("Hallo Mike",target.readText().trim())
-
+        target.exists().shouldBe(true)
+        target.readText().trim().shouldBe("Hallo Mike")
     }
 }

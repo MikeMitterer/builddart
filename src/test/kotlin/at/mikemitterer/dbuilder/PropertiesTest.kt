@@ -1,44 +1,47 @@
 package at.mikemitterer.dbuilder
 
+import io.kotlintest.Description
+import io.kotlintest.Spec
+import io.kotlintest.shouldBe
+import io.kotlintest.specs.FunSpec
 import org.apache.commons.io.FilenameUtils
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import org.slf4j.LoggerFactory
 
 /**
  * @since 28.02.18, 09:38
  */
-class PropertiesTest : Assert() {
+class PropertiesTest : FunSpec() {
     private val logger = LoggerFactory.getLogger(PropertiesTest::class.java)
-    @Before
-    fun setUp() {
-        System.setProperty(SYSTEM_PROP_PATH,"${System.getProperty("user.dir")}/src/test/resources")
+
+    override fun beforeSpec(description: Description, spec: Spec) {
+        super.beforeSpec(description, spec)
+        System.setProperty(SYSTEM_PROP_PATH, "${System.getProperty("user.dir")}/src/test/resources")
     }
 
-    @After
-    fun tearDown() {
+    override fun afterSpec(description: Description, spec: Spec) {
+        super.afterSpec(description, spec)
         System.getProperties().remove(SYSTEM_PROP_PATH)
     }
 
-    @Test
-    fun testNormalizePath() {
-        val filename = FilenameUtils.normalizeNoEndSeparator(".")
-        assertEquals(".",filename)
-    }
+    init {
 
-    @Test
-    fun testRead() {
-        val name = properties["name"]
+        test("Normalizing a dot-Dir should return .") {
+            val filename = FilenameUtils.normalizeNoEndSeparator(".")
+            filename.shouldBe("")
+        }
 
-        logger.info("Working Directory = " + System.getProperty("user.dir"))
-        assertEquals("Mike",name)
-    }
+        test("Name property should return 'Mike'") {
+            val name = properties["name"]
 
-    @Test
-    fun testNotExistingPropertiesFile() {
-        System.setProperty(SYSTEM_PROP_PATH,"${System.getProperty("user.dir")}/does/not/exist")
-        assertEquals("defaultValue", properties.getProperty("name","defaultValue"))
+            logger.info("Working Directory = " + System.getProperty("user.dir"))
+            name.shouldBe("Mike")
+        }
+
+        test("Should show default Value") {
+            System.setProperty(SYSTEM_PROP_PATH, "${System.getProperty("user.dir")}/does/not/exist")
+
+            properties.getProperty("firstname", "defaultValue").shouldBe("defaultValue")
+        }
+
     }
 }
