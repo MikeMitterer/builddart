@@ -13,6 +13,7 @@ class SplitMDContentTest : FunSpec() {
                 name: Mike
                 fullname: "Mike Mitterer    "
                 age: 99
+                sampleurl: https://github.com/MikeMitterer/m4d_directive/tree/master/samples/m4d_attribute/web
                 ~~~~
                 I am a MD content
                 This is the second line
@@ -42,7 +43,7 @@ class SplitMDContentTest : FunSpec() {
                         line.isEmpty() || line.isBlank()
                     }
 
-            lines.size.shouldBe(3)
+            lines.size.shouldBe(4)
 
             val keyValuePairs = mutableListOf<Pair<String, String>>()
 
@@ -62,10 +63,11 @@ class SplitMDContentTest : FunSpec() {
                     .shouldBe("My name is Mike")
         }
 
-        test("should return 3 KV-Pairs") {
-            val content = splitMarkdown(fileContent) { kvPairs, mdBlock ->
+        test("should return 4 KV-Pairs") {
+            val content = splitMarkdown(fileContent) {
+                kvPairs, mdBlock ->
 
-                kvPairs.size.shouldBe(3)
+                kvPairs.size.shouldBe(4)
 
                 var content = mdBlock
                 kvPairs.forEach { pair ->
@@ -83,7 +85,7 @@ class SplitMDContentTest : FunSpec() {
 
             val content = splitMarkdown(fileContent) { kvPairs, mdBlock ->
 
-                kvPairs.size.shouldBe(3)
+                kvPairs.size.shouldBe(4)
 
                 var content = htmlTemplate.replace("{{_content}}", mdBlock)
                 kvPairs.forEach { pair ->
@@ -110,5 +112,20 @@ class SplitMDContentTest : FunSpec() {
             lines[1].trim().shouldBe("<head>Title 99</head>")
             lines[5].trim().shouldBe("My name is Mike")
         }
+
+        test("Sample-URL should return full URL") {
+            val url = splitMarkdown(fileContent) {
+                kvPairs, _ ->
+
+                val (_,url) = kvPairs.find {
+                    it.first == "sampleurl"
+                } ?: Pair("","")
+
+                url
+            }
+
+            url.shouldBe("https://github.com/MikeMitterer/m4d_directive/tree/master/samples/m4d_attribute/web")
+        }
+
     }
 }

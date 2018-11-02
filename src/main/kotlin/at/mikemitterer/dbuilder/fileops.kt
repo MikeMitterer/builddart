@@ -59,7 +59,7 @@ fun splitMarkdown(content: String, callback: (kvPairs : List<Pair<String,String>
     val keyValuePairs = mutableListOf<Pair<String,String>>()
 
     lines.forEach { line ->
-        val (key,value) = line.split(Regex(":")).map {
+        val (key,value) = line.split(Regex(":"),2).map {
             it.trim().replace(Regex("^[\"'](.*)[\"']$"),"$1")
         }
         keyValuePairs.add(Pair(key, value))
